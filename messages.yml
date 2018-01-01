@@ -1,0 +1,60 @@
+#########################################################################################################################################################
+#                                                                            					                                    					#
+#                                                                      Anni messages file                                								#
+#                                                                                                               										#
+#                                                                       Author spigot:                                    								#
+#                                                                    http://bit.ly/Mot458                                								#
+#                                                                                                                    									#
+#                                                                          Plugin:                                    									#
+#                                                                 http://bit.ly/AnniRecoded                                								#
+#                                                                            						                                    				#
+#                                                                    © Mot458 2017 - 2018                                    							#
+#                                                                            										                                    #
+#########################################################################################################################################################
+
+dontperm: " &cYou don't have permissions!"
+ouseplayer: " &eThis command can use only player!"
+useclass: " &7Use: &e/Class"
+mapisntexist: " &7This map isn't exist!"
+votedfor: " &7You voted for: &e"
+soulbound: " &6Soulbound"
+ 
+voting:
+  ended: " &7Voting ended!"
+  alreadyend: " &7Voting already ended!"
+
+team:
+  unknown: " &7Unknown team!"
+  full: " &eThis team is full!"
+  cantchange: " &7You can't change team!"
+  destroynex: " &7This team have destroy nexus!"
+  selected: " &7Selected team "
+  notjoin: " &7You are not joined to team!"
+
+phase:
+  cantjoin: " &cYou can't join to this phase!" #Phase kick message
+  
+game:
+  alreadystart: " &eGame already starting!"
+  starting: " &aGame starting!"
+  isntstart: " &7Game isn't starting!"
+  
+blocks:
+  chest: " &7This ender chest protect your items."
+  furnace: " &7This ender furnace protect your ingots."
+  brewing: " &7This ender brewing protect your potions."
+  
+nexus:
+  buildnear: " &7You can't build near nexus!"
+  destroynear: " &7You can't build near nexus!"
+  destroyyour: " &7You can't destroy your nexus!"
+  inthisphase: " &7You can't destroy nexus in this phase!"
+  
+class:
+  selected: " &7Selected class: &e"
+  youget: " &7This class you get after respawn!"
+  
+shop:
+  bought: " &7You bought: &e"
+  dontgold: " &7You don't have enought golds for: &e"
+  brewing: " &eBrewing shop is aviable in phase &a4"

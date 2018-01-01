@@ -1,0 +1,275 @@
+#########################################################################################################################################################
+#                                                                                                                										#
+#                                                                       Term of use                                    									#
+#                                                                                                                  										#
+#                                                           Don't decompile plugin (Plugin is open SRC)                           						#
+#                                                                   Don't take it for yours!                           							        #
+#                                                                 Don't post it for your work!  		            									#
+#                                                                            								                                    		#
+#########################################################################################################################################################
+#                                                                            					                                    					#
+#                                                                      Anni config file                                									#
+#                                                                            										                                    #
+#                                                                       Spigot v.1.8.8                                    								#
+#                                                                     Softdepend:  Vault                                								#
+#                                                                 Plugin recoded by:  Mot458                                							#
+#                                                                                                               										#
+#                                                                       Author spigot:                                    								#
+#                                                                    http://bit.ly/Mot458                                								#
+#                                                                                                                    									#
+#                                                                          Plugin:                                    									#
+#                                                                 http://bit.ly/AnniRecoded                                								#
+#                                                                            						                                    				#
+#                                                                   © Mot458 2017 - 2018                                    						    #
+#                                                                            										                                    #
+#########################################################################################################################################################
+
+# Time to start |  1 = 1 second | I recommend: 60-120 seconds
+start-delay: 60
+
+# Phase time | 1 = 1 second | I recommend: 600 seconds = 10 minutes
+phase-period: 600
+
+# Restart time | 1 = 1 second
+restart-delay: 30
+
+# Nexus settings
+nexus:
+  hp: 70
+  block: "ENDER_STONE"
+
+# Stats system: "flatfile" = File database (stats.yml) |  "sql" = MySQL database
+stats: flatfile
+MySQL:
+    port: 3306
+    user: user
+    pass: passw
+    host: localhost
+    name: database_name
+ 
+# Phase numbers: true = Roman numbers (I, II, ...) | false = Normal numbers (1, 2, ...)
+roman: true
+
+# Anni prefix
+prefix: '&7[&eAnni&7]'
+
+# Number of players needed to start | I recommend: 10 for small server
+requiredToStart: 4
+
+# Zone around Nexus (The player can't destroy, build) | I recommend: 14
+build: 14
+
+# Time to spawn boss | 1 = 1 minute | I recommend: 10 minutes (To agree with the phase)
+bossRespawnDelay: 10
+
+# MOTD | true = on | false = off
+enableMotd: true
+
+# Last time to join to the game (Phase)
+lastJoinPhase: 2
+
+# MOTD
+#
+# Variables:
+# %PHASE% (Get current phase) | %TIME% (Get current game time) | %PLAYERCOUNT% (Get joined player) | %MAXPLAYERS% (Get max players (slots))
+# %GREENNEXUS% (Get current green nexus HP) | %REDNEXUS% (Get current red nexus HP) | %BLUENEXUS% (Get current blue nexus HP) | %YELLOWNEXUS% (Get current yellow nexus HP)
+# %GREENCOUNT% (Get green online players) | %REDCOUNT% (Get red online players) | %BLUECOUNT% (Get blue online players) | %YELLOWCOUNT% (Get yellow online players)
+#
+motdLobby: '&e&lLobby'
+motdPhase: '&cInGame &8| &aPhase &8» &e%PHASE%'
+
+# ActionBar:
+# %PHASE% %TIME% %RESTART% %TOTAL%
+ActionWelcome: ' &7Welcome in anni!'
+ActionPhase: '&aPhase: &e%PHASE% &f&l| &cTime: &5%TIME%'
+ActionStart: '&7Game start in '
+ActionRestart: '&cTotal time: &6%TOTAL% &f| &aServer is restarting in &c%RESTART%'
+
+# TitleAPI
+# Team
+EnableJoinTeamTitle: true
+JoinTitleTeam: '&fSelected team'
+JoinSubTitleTeam: '&r%TEAM%'
+
+# Slected Class
+EnableClassTitle: true
+ClassTitleSelect: '&fSelected class'
+ClassSubTitleSelect: '&e%CLASS%'
+
+# Join
+EnableJoinTitle: true
+JoinTitle: '&7Welcome in Anni'
+JoinSubTitle: '&eEnjoy the game!'
+
+# MapTitle
+EnableMapTitle: true
+MapTitle: '&7Map &e%MAP% &7was voted'
+MapSubTitle: '&7enjoy map'
+
+# BossTitle
+EnableBossTitle: true
+SpawnBossTitle: 'Boss &a%boss% &fwas spawned!'
+SpawnBossSubTitle: '&cGo kill him!'
+
+# EndGameTitle
+EnableEndTitle: true
+EndGameTitle: '&aCongratulation'
+EndGameSubTitle: 'Team %TEAM% &fwin this game!'
+
+# NexusTitle
+EnableNexusTitle: true
+NexusDestroyedTitle: 'Player %KILLER% &rfrom team &r%TEAM%'
+NexusDestroyedSubTitle: 'destroy &r%DESTROYED% nexus&r!'
+
+# PhaseTitle
+EnablePhaseTitle: true
+PhaseTitle: 'Phase &e%PHASE%'
+PhaseSubTitle: 'Started!'
+
+# TAB
+# %PHASE% %TIME% %MAP%
+EnableTab: true
+Header: '&7Map: &e%MAP%'
+Voting: '&7Voting'
+Footer: '&aPhase &e%PHASE% &7&l| &b%TIME%'
+
+# ScoreBoard
+LobbySB: '&aVoting &f| &e/vote <ID>'
+sb:
+  name: '&6&lAnni'
+  map: '&7Map: &6&l%MAP%'
+  phase: '&7Phase: &6&l%PHASE%'
+  server: ' &7mc.myserver.com'
+
+# Menus
+#
+# Team
+JoinItemTeamName: '&eSelect team'
+ItemTeamID: 340
+JoinItemTeamSlot: 1
+# Menu
+TitleTeamMenu: '&7&l&nSelect team'
+TeamSlotMenu: 9
+# Team slot
+YellowSlot: 1
+RedSlot: 2
+GreenSlot: 3
+BlueSlot: 4
+# Teams name
+YellowName: '&eYellow'
+RedName: '&cRed'
+GreenName: '&aGreen'
+BlueName: '&9Blue'
+# Teams Lore VARIABLE:  "Â»" - %ARROW%
+YellowLore: '&e%ARROW% &7Players: &e%YELLOW%'
+RedLore: '&c%ARROW% &7Players: &c%RED%'
+GreenLore: '&a%ARROW% &7Players: &a%GREEN%'
+BlueLore: '&9%ARROW% &7Players: &9%BLUE%'
+
+# Class
+TitleClassMenu: '&7&l&nSelect Class'
+# Item
+JoinItemClassName: '&bSelect class'
+JoinItemClassSlot: 2
+ItemClassID: 288
+
+# Compass variable (name): Team color = %COLOR% | Team name = %TEAM%
+CompassItem: '&f&lPoiting to %COLOR%%TEAM% nexus!'
+
+# Chat variable: %color% = Team color
+LobbyChat: '&8[&eLobby&8]'
+AllChat: '&8[%color%All&8]'
+TeamChat: '&8[%color%Team&8]'
+DeadChat: '&8[&cDEAD&8]'
+AllChatText: '!'
+ChatEnd: '&e&l>'
+
+# Kill XP
+KillXP: 5
+KillBossXP: 20
+
+# Commands after game (when game end)
+commandsToRunAtEndGame:
+ - "wr reset now"
+ - "restart"
+
+
+# Boss
+Boss-loot:
+  Item-Nb: 6
+  Item0:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 1
+        OXYGEN: 3
+      display-name: '§bOxygen'
+      lore:
+      - '§7Can it hold for some time under water'
+      repair-cost: 4
+  Item1:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+      display-name: '§bOxygen two'
+      lore:
+      - '§7Can it hold for some time under water'
+      - '§5 + protect 4!'
+      repair-cost: 4
+  Item2:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 2
+        PROTECTION_FALL: 4
+      display-name: '§bFallen boots'
+      lore:
+      - '§7Resist to the biggest falls!'
+      repair-cost: 2
+  Item4:
+    ==: org.bukkit.inventory.ItemStack
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        ARROW_INFINITE: 1
+      display-name: '§7Infinity bow'
+      lore:
+      - '§7You need only one arrow!'
+      repair-cost: 4
+  Item5:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DAMAGE_ALL: 3
+      display-name: '§7Blood offer'
+      lore:
+      - '§7With this you kill everyone!'
+      repair-cost: 2
+  Item6:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+      display-name: '§bTroll plate'
+      lore:
+      - '§7Resist everything!'
+      repair-cost: 2
