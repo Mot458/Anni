@@ -46,9 +46,9 @@ For kits is permission 'anni.class.<KitName>'
 
 
 v. 3.2:
-[+] Autolapis
-[+] Brewing shop aviable message to messages.yml
-[+] New scoreboard!
+a) [+] Autolapis
+b) [+] Brewing shop aviable message to messages.yml
+c) [+] New scoreboard!
 
 [-] (BUG) player can destroying resources (ores,woods,etc.) in lobby
 [-] PlayerDeathEvent spaming console
