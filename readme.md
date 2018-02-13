@@ -41,23 +41,21 @@ For kits is permission 'anni.class.<KitName>'
 
 #Changelog:
 
-[+] Added
-[-] Removed
 
 
 v. 3.2:
-a) [+] Autolapis
-b) [+] Brewing shop aviable message to messages.yml
-c) [+] New scoreboard!
+ - [+] Autolapis
+ - [+] Brewing shop aviable message to messages.yml
+ - [+] New scoreboard!
 
-[-] (BUG) player can destroying resources (ores,woods,etc.) in lobby
-[-] PlayerDeathEvent spaming console
+ - [-] (BUG) player can destroying resources (ores,woods,etc.) in lobby
+ - [-] PlayerDeathEvent spaming console
 
 v. 3.1:
-[+] Much custom messages
-[+] Welcome action to config.yml
-[+] Changed %SIPKA% to %ARROW%
-[+] Nexus block to config.yml
+ - [+] Much custom messages
+ - [+] Welcome action to config.yml
+ - [+] Changed %SIPKA% to %ARROW%
+ - [+] Nexus block to config.yml
 
-[-] (BUG) when player died, plugin send death message "r"
-[-] (BUG) furnaces don't work
+ - [-] (BUG) when player died, plugin send death message "r"
+ - [-] (BUG) furnaces don't work
