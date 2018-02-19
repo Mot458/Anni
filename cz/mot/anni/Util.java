@@ -27,14 +27,18 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import cz.mot.anni.manager.VotingManager;
 import cz.mot.anni.object.GameTeam;
 import cz.mot.anni.object.Kit;
 import cz.mot.anni.object.PlayerMeta;
+
 import net.minecraft.server.v1_8_R3.EnumParticle;
 
 
 public class Util {
     
+    public static VotingManager voting;
+	
 //public class ParticleEffect {
 
 /**
@@ -1454,7 +1458,7 @@ lore.add(ChatColor.GRAY + "");
 if (kit.isOwnedBy(p)) {
 lore.add("§aUnlocked");
 } else {
-lore.add("§clocked");
+lore.add("§cLocekd");
 }
 im.setLore(lore);
 i.setItemMeta(im);
@@ -1576,5 +1580,5 @@ public static void giveTeamSelector(Player player){
     selector.setItemMeta(itemMeta);
     player.getInventory().setItem(slot-1, selector);
     player.updateInventory();
-}
+  }
 }

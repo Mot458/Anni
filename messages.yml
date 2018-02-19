@@ -58,3 +58,7 @@ shop:
   bought: " &7You bought: &e"
   dontgold: " &7You don't have enought golds for: &e"
   brewing: " &eBrewing shop is aviable in phase &a4"
+  
+kit:
+  ulocked: "&aUnlocked"
+  locked: "&cLocked"

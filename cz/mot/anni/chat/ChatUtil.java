@@ -16,7 +16,6 @@ public class ChatUtil {
 
     private static final String RESET = ChatColor.RESET.toString();
 
-
     private static boolean roman = false;
 
     public static void setRoman(boolean b) {

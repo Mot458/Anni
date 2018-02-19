@@ -30,7 +30,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -40,7 +39,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
-
 import cz.mot.anni.Main;
 import cz.mot.anni.Util;
 import cz.mot.anni.api.TitleAPI;
@@ -52,6 +50,7 @@ import cz.mot.anni.object.GameTeam;
 import cz.mot.anni.object.Kit;
 import cz.mot.anni.object.PlayerMeta;
 import cz.mot.anni.stats.StatType;
+
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand;
@@ -195,7 +194,8 @@ public class PlayerListener implements Listener {
     		e.setCancelled(true);
     	}
     }
-    @SuppressWarnings("deprecation")
+
+	@SuppressWarnings("deprecation")
 	@EventHandler
     public void onInteractTeam(PlayerInteractEvent e) {
         Player player = e.getPlayer();
@@ -214,40 +214,55 @@ public class PlayerListener implements Listener {
                 }
         }
     }
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+    public void onInteractStart(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        Action a = e.getAction();
+        if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack handItem = player.getItemInHand();
+            if (handItem != null) {
+            	int id = plugin.getConfig().getInt("StartItemID");
+                if (handItem.getType() == Material.getMaterial(id)) {
+                    if (handItem.getItemMeta().hasDisplayName()) {
+                    	String item = plugin.getConfig().getString("StartItemName").replace("&", "§");
+                        if (handItem.getItemMeta().getDisplayName().contains(item));
+                        
+                        plugin.startTimer();
+                        }
+                    }
+                }
+        }
+    }	
+	
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
-        Player player = e.getPlayer();
-        PlayerMeta meta = PlayerMeta.getMeta(player);
+        Player p = e.getPlayer();
+        PlayerMeta meta = PlayerMeta.getMeta(p);
+        
+    	p.setGameMode(GameMode.SURVIVAL);
+        
         if (meta.isAlive()) {
             if (kitsToGive.containsKey(e.getPlayer().getName())) {
                 meta.setKit(kitsToGive.get(e.getPlayer().getName()));
                 kitsToGive.remove(e.getPlayer().getName());
             }
             e.setRespawnLocation(meta.getTeam().getRandomSpawn());
-            meta.getKit().give(player, meta.getTeam());
+            meta.getKit().give(p, meta.getTeam());
         } else {
-            int id = plugin.getConfig().getInt("ItemClassID");
             e.setRespawnLocation(plugin.getMapManager().getLobbySpawnPoint());
-            @SuppressWarnings("deprecation")
-			ItemStack selector = new ItemStack(Material.getMaterial(id));
-            ItemMeta itemMeta = selector.getItemMeta();
-            String item = plugin.getConfig().getString("JoinItemClassName").replace("&", "§");
-            itemMeta.setDisplayName(item);
-            selector.setItemMeta(itemMeta);
-            int slot = plugin.getConfig().getInt("JoinItemClassSlot");
-            player.getInventory().setItem(slot-1, selector);
-        }
+            p.setGameMode(GameMode.SPECTATOR);
+        	p.setPlayerListName("§7§l[SPEC] §f" + p.getDisplayName());
+        	for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
+      	      pl.hidePlayer(p);
     }
+  }
+}
+    
 
-    @EventHandler
-    public void onKick(PlayerKickEvent e) {
-        if (e.getReason().equals(ChatColor.RED + "ANNIHILATION-TRIGGER-KICK-01")) {
-            e.setReason(plugin.getConfigManager().getConfig("messages.yml").getString("phase.cantjoin").replace("&", "§"));
-            e.setLeaveMessage(null);
-        }
-    }
-
-    @EventHandler
+    @SuppressWarnings("deprecation")
+	@EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
     	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
     	String msg = plugin.getConfig().getString("JoinTitle").replace("&", "§");
@@ -269,7 +284,12 @@ public class PlayerListener implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    player.kickPlayer((ChatColor.RED + "ANNIHILATION-TRIGGER-KICK-01"));
+                    player.teleport(plugin.getMapManager().getLobbySpawnPoint());
+                	player.setGameMode(GameMode.SPECTATOR);
+                	player.setPlayerListName("§7§l[SPEC] §f" + player.getDisplayName());
+                	for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
+                	      pl.hidePlayer(player);
+                	}
                 }
             }, 1l);
             e.setJoinMessage("");
@@ -302,8 +322,7 @@ public class PlayerListener implements Listener {
             player.setExp(0);
             player.setSaturation(20F);
             int id = plugin.getConfig().getInt("ItemClassID");
-            @SuppressWarnings("deprecation")
-			ItemStack selector = new ItemStack(Material.getMaterial(id));
+            ItemStack selector = new ItemStack(Material.getMaterial(id));
             ItemMeta itemMeta = selector.getItemMeta();
             String item = plugin.getConfig().getString("JoinItemClassName").replace("&", "§");
             itemMeta.setDisplayName(item);
@@ -311,7 +330,19 @@ public class PlayerListener implements Listener {
             selector.setItemMeta(itemMeta);
         	int slot = plugin.getConfig().getInt("JoinItemClassSlot");
             player.getInventory().setItem(slot-1, selector);
-
+            
+            if (player.hasPermission("anni.startitem")) {
+            	
+                int id3 = plugin.getConfig().getInt("StartItemID");
+            	int slot3 = plugin.getConfig().getInt("StartItemSlot");
+                String item3 = plugin.getConfig().getString("StartItemName").replace("&", "§");
+    			ItemStack start = new ItemStack(Material.getMaterial(id3));
+                ItemMeta itemMeta3 = start.getItemMeta();
+                itemMeta3.setDisplayName(item3);
+                start.setItemMeta(itemMeta3);
+                player.getInventory().setItem(slot3-1, start);
+            }
+            
             player.updateInventory();
         }
 
@@ -344,6 +375,8 @@ public class PlayerListener implements Listener {
             meta.setAlive(false);
                 meta.setTeam(GameTeam.NONE);
         plugin.getSignHandler().updateSigns(meta.getTeam());
+        
+        event.setQuitMessage(null);
     }
 }
 

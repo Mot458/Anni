@@ -10,6 +10,7 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -245,7 +246,6 @@ public final class Main extends JavaPlugin {
 	}
 	inventories = null;
 }
-
     public void loadMap(final String map) {
         FileConfiguration config = configManager.getConfig("maps.yml");
         ConfigurationSection section = config.getConfigurationSection(map);
@@ -330,7 +330,6 @@ public final class Main extends JavaPlugin {
             sbt.setPrefix(t.color().toString());
             
         	String sbm = this.getConfig().getString("sb.map").replace("&", "§").replace("%MAP%", WordUtils.capitalize(voting.getWinner()));
-        	String sbp = this.getConfig().getString("sb.phase").replace("&", "§").replace("%PHASE%", ChatUtil.translateRoman(Main.getInstance().getPhase()));
         	String sbs = this.getConfig().getString("sb.server").replace("&", "§");
             
     		Score spacer = sb.obj.getScore("§c");
@@ -339,17 +338,14 @@ public final class Main extends JavaPlugin {
     		Score spacer2 = sb.obj.getScore(sbm);
     		spacer2.setScore(-2);
         	
-    		Score spacer4 = sb.obj.getScore(sbp);
-    		spacer4.setScore(-3);
-        	
     		Score spacer5 = sb.obj.getScore("§e");
-    		spacer5.setScore(-4);
+    		spacer5.setScore(-3);
     		
     		Score spacer6 = sb.obj.getScore(sbs);
-    		spacer6.setScore(-5);
+    		spacer6.setScore(-4);
         }
 
-        sb.obj.setDisplayName("§6Anni");
+        sb.obj.setDisplayName(sbn);
 
         for (Player p : getServer().getOnlinePlayers())
             if (PlayerMeta.getMeta(p).getTeam() != GameTeam.NONE)
@@ -382,7 +378,7 @@ public final class Main extends JavaPlugin {
             }
         }, 100L, 5L);
     }
-
+    
     public void advancePhase() {
         ChatUtil.phaseMessage(timer.getPhase());
 
@@ -504,8 +500,11 @@ public final class Main extends JavaPlugin {
             p.setHealth(20D);
             p.setFoodLevel(20);
             p.setSaturation(20F);
+            
+            //Class item
+            
             int id = this.getConfig().getInt("ItemClassID");
-            @SuppressWarnings("deprecation")
+			@SuppressWarnings("deprecation")
 			ItemStack selector = new ItemStack(Material.getMaterial(id));
             ItemMeta itemMeta = selector.getItemMeta();
             String item = this.getConfig().getString("JoinItemClassName").replace("&", "§");
@@ -540,8 +539,7 @@ public final class Main extends JavaPlugin {
 
                     p.getInventory().clear();
 
-                    for (PotionEffect effect : p.getActivePotionEffects())
-                        p.removePotionEffect(effect.getType());
+                    for (PotionEffect effect : p.getActivePotionEffects()) p.removePotionEffect(effect.getType());
 
                     p.setLevel(0);
                     p.setExp(0);
@@ -627,7 +625,7 @@ public final class Main extends JavaPlugin {
         }
         sender.sendMessage("§8==================================");
     }
-
+    
     @SuppressWarnings("deprecation")
 	public void joinTeam(Player player, String team) {
     	String prefix = this.getConfig().getString("prefix").replace("&", "§");
@@ -659,9 +657,8 @@ public final class Main extends JavaPlugin {
             }
         }
 
-        if (getPhase() > lastJoinPhase
-                && !player.hasPermission("anni.bypass.phaselimiter")) {
-            player.kickPlayer(prefix + ChatColor.RED + configManager.getConfig("messages.yml").getString("phase.cantjoin").replace("&", "§"));
+        if (getPhase() > lastJoinPhase && !player.hasPermission("anni.bypass.phaselimiter")) {
+            player.setGameMode(GameMode.SPECTATOR);
             return;
         }
         
@@ -684,6 +681,7 @@ public final class Main extends JavaPlugin {
         getSignHandler().updateSigns(GameTeam.GREEN);
         getSignHandler().updateSigns(GameTeam.YELLOW);
     }
+    
     public void Team(final Player p) {
     	@SuppressWarnings("deprecation")
 		IconMenu menu = new IconMenu("§e§l§nSelect team", 9, new IconMenu.OptionClickEventHandler() {
@@ -720,4 +718,4 @@ public final class Main extends JavaPlugin {
 
         menu.open(p);
     }
-    }
+}

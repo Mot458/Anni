@@ -2,9 +2,9 @@
 # Annihilation
 # 
 
-Softdepend: Vault
-Spigot version: 1.8.8
-Version: 3.2
+- Softdepend: Vault
+- Spigot version: 1.8.8
+- Version: 3.2
 
 #Features:
  - Custom nexus HP & block
@@ -38,12 +38,28 @@ For kits is permission 'anni.class.<KitName>'
  - /distance - Show you where is nearest nexus
  - /map <edit/save> <map name> - Edit/Save anni map
  - /red, /yellow, /green & /blue - Join you to team
+ 
+#ToDo list:
+1. Spawn kill protection
+2. Spectate after game
+3. Game start item
+4. Maps item
 
 #Changelog:
 
+v 3.4
+- [+] Spectate system
+- [+] Game Start item
+
+- [-] Nothing :) 
+
+v 3.3
+- [+] Edited config.yml
+
+- [-] Phase from scoreboard
 
 
-v. 3.2:
+v. 3.2
  - [+] Autolapis
  - [+] Brewing shop aviable message to messages.yml
  - [+] New scoreboard!
@@ -51,7 +67,7 @@ v. 3.2:
  - [-] (BUG) player can destroying resources (ores,woods,etc.) in lobby
  - [-] PlayerDeathEvent spaming console
 
-v. 3.1:
+v. 3.1
  - [+] Much custom messages
  - [+] Welcome action to config.yml
  - [+] Changed %SIPKA% to %ARROW%

@@ -138,28 +138,40 @@ LobbySB: '&aVoting &f| &e/vote <ID>'
 sb:
   name: '&6&lAnni'
   map: '&7Map: &6&l%MAP%'
-  phase: '&7Phase: &6&l%PHASE%'
   server: ' &7mc.myserver.com'
 
-# Menus
-#
+# Vote item
+VoteItemID: 339
+VoteItemSlot: 3
+VoteItemName: "&7Vote for map"
+VoteMenuName: "&9Vote map"
+
+# Start item
+StartItemID: 264
+StartItemSlot: 9
+StartItemName: "&bStart game"
+
 # Team
 JoinItemTeamName: '&eSelect team'
 ItemTeamID: 340
 JoinItemTeamSlot: 1
+
 # Menu
 TitleTeamMenu: '&7&l&nSelect team'
 TeamSlotMenu: 9
+
 # Team slot
 YellowSlot: 1
 RedSlot: 2
 GreenSlot: 3
 BlueSlot: 4
+
 # Teams name
 YellowName: '&eYellow'
 RedName: '&cRed'
 GreenName: '&aGreen'
 BlueName: '&9Blue'
+
 # Teams Lore VARIABLE:  "Â»" - %ARROW%
 YellowLore: '&e%ARROW% &7Players: &e%YELLOW%'
 RedLore: '&c%ARROW% &7Players: &c%RED%'
@@ -168,6 +180,7 @@ BlueLore: '&9%ARROW% &7Players: &9%BLUE%'
 
 # Class
 TitleClassMenu: '&7&l&nSelect Class'
+
 # Item
 JoinItemClassName: '&bSelect class'
 JoinItemClassSlot: 2
