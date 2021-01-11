@@ -38,6 +38,12 @@ nexus:
   hp: 70
   block: "ENDER_STONE"
 
+#LeaveSystem
+LeaveItemID: 339
+LeaveItemSlot: 9
+LeaveItemName: "&cLeave game"
+LeaveMessage: "&c&lCMD &7%ARROW% &fTeleporting you to &2lobby&r!"
+
 # Stats system: "flatfile" = File database (stats.yml) |  "sql" = MySQL database
 stats: flatfile
 MySQL:
@@ -71,12 +77,20 @@ lastJoinPhase: 2
 # MOTD
 #
 # Variables:
-# %PHASE% (Get current phase) | %TIME% (Get current game time) | %PLAYERCOUNT% (Get joined player) | %MAXPLAYERS% (Get max players (slots))
+# InLobby:
+# %PLAYERCOUNT% (Get online players) | %MAXPLAYERS% (Get max players (slots)) | %ARROW% (»)
+#
+# InGame:
+# %TIME% (Get current game time) | %PLAYERCOUNT% (Get online player) | %MAXPLAYERS% (Get max players (slots)) | %ARROW% (»)
 # %GREENNEXUS% (Get current green nexus HP) | %REDNEXUS% (Get current red nexus HP) | %BLUENEXUS% (Get current blue nexus HP) | %YELLOWNEXUS% (Get current yellow nexus HP)
 # %GREENCOUNT% (Get green online players) | %REDCOUNT% (Get red online players) | %BLUECOUNT% (Get blue online players) | %YELLOWCOUNT% (Get yellow online players)
 #
-motdLobby: '&e&lLobby'
-motdPhase: '&cInGame &8| &aPhase &8» &e%PHASE%'
+motdLobby: '&e&lLobby &8| &a&lPlayers &8%ARROW% &e%PLAYERCOUNT%&f/&c%MAXPLAYERS%'
+motdPhase1: '&cInGame &8| &aPhase &8%ARROW% &eI'
+motdPhase2: '&cInGame &8| &aPhase &8%ARROW% &cII'
+motdPhase3: '&cInGame &8| &aPhase &8%ARROW% &4III'
+motdPhase4: '&cInGame &8| &aPhase &8%ARROW% &4IV'
+motdPhase5: '&cInGame &8| &aPhase &8%ARROW% &4V'
 
 # ActionBar:
 # %PHASE% %TIME% %RESTART% %TOTAL%
@@ -142,14 +156,18 @@ sb:
 
 # Vote item
 VoteItemID: 339
-VoteItemSlot: 3
-VoteItemName: "&7Vote for map"
-VoteMenuName: "&9Vote map"
+VoteItemSlot: 5
+VoteItemName: "&eVote for map"
 
 # Start item
 StartItemID: 264
-StartItemSlot: 9
+StartItemSlot: 7
 StartItemName: "&bStart game"
+
+# Stats item
+StatsItemID: 323
+StatsItemSlot: 8
+StatsItemName: "&6Stats"
 
 # Team
 JoinItemTeamName: '&eSelect team'

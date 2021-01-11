@@ -1,9 +1,11 @@
 package cz.mot.anni;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import org.apache.commons.lang.WordUtils;
@@ -21,6 +23,9 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -30,6 +35,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
+
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 import cz.mot.anni.api.ActionAPI;
 import cz.mot.anni.api.TitleAPI;
@@ -46,6 +54,7 @@ import cz.mot.anni.cmds.VoteCommand;
 import cz.mot.anni.events.AutoLapisEvent;
 import cz.mot.anni.events.GameStartEvent;
 import cz.mot.anni.events.IconMenu;
+import cz.mot.anni.events.IconMenu.OptionClickEvent;
 import cz.mot.anni.events.PhaseChangeEvent;
 import cz.mot.anni.listeners.BossListener;
 import cz.mot.anni.listeners.ClassAbilityListener;
@@ -77,7 +86,7 @@ import cz.mot.anni.stats.StatType;
 import cz.mot.anni.stats.StatsManager;
 
 
-public final class Main extends JavaPlugin {
+public final class Main extends JavaPlugin implements Listener {
     private ConfigManager configManager;
     public VotingManager voting;
     private MapManager maps;
@@ -94,7 +103,7 @@ public final class Main extends JavaPlugin {
 
     public static HashMap<String, String> messages = new HashMap<>();
 	public ArrayList<EnchantingInventory> inventories;
-
+	
     public boolean useMysql = false;
     public boolean updateAvailable = false;
     public boolean motd = true;
@@ -176,6 +185,7 @@ public final class Main extends JavaPlugin {
         pm.registerEvents(new ClassAbilityListener(this), this);
         pm.registerEvents(new BossListener(this), this);
         pm.registerEvents(new AutoLapisEvent(this), this);
+        pm.registerEvents(this, this);
 
         getCommand("annihilation").setExecutor(new AnniCommand(this));
         getCommand("class").setExecutor(new ClassCommand(this));
@@ -245,7 +255,8 @@ public final class Main extends JavaPlugin {
 		ei.setItem(1, null);
 	}
 	inventories = null;
-}
+    }
+    
     public void loadMap(final String map) {
         FileConfiguration config = configManager.getConfig("maps.yml");
         ConfigurationSection section = config.getConfigurationSection(map);
@@ -322,11 +333,11 @@ public final class Main extends JavaPlugin {
         sb.obj.setDisplayName(sbn);
 
         for (GameTeam t : GameTeam.teams()) {
-            sb.scores.put(t.name(), sb.obj.getScore(Bukkit.getOfflinePlayer(WordUtils.capitalize(t.name().toLowerCase() + " Nexus"))));
-            sb.scores.get(t.name()).setScore(t.getNexus().getHealth());
+            sb.scores.put(t.name(), sb.obj.getScore(Bukkit.getOfflinePlayer(WordUtils.capitalize(t.name().toLowerCase() + " Nexus §7" + t.getNexus().getHealth()))));
+            sb.scores.get(t.name()).setScore(1);
 
             Team sbt = sb.sb.registerNewTeam(t.name() + "SB");
-            sbt.addPlayer(Bukkit.getOfflinePlayer(WordUtils.capitalize(WordUtils.capitalize(t.name().toLowerCase() + " Nexus"))));
+            sbt.addPlayer(Bukkit.getOfflinePlayer(WordUtils.capitalize(WordUtils.capitalize(t.name().toLowerCase() + " Nexus §7" + t.getNexus().getHealth()))));
             sbt.setPrefix(t.color().toString());
             
         	String sbm = this.getConfig().getString("sb.map").replace("&", "§").replace("%MAP%", WordUtils.capitalize(voting.getWinner()));
@@ -369,10 +380,12 @@ public final class Main extends JavaPlugin {
             public void run() {
                 for (GameTeam t : GameTeam.values()) {
                     if (t != GameTeam.NONE && t.getNexus().isAlive()) {
+                        Random s = new Random();
                         Location nexus = t.getNexus().getLocation().clone();
+                        float pitch = 5F + s.nextFloat() * 2F;
                         nexus.add(0.5, 0, 0.5);
-                        Util.ParticleEffect.PORTAL.getName();
-                        Util.ParticleEffect.ENCHANTMENT_TABLE.getName();
+                        Util.ParticleEffect.FLAME.display(pitch, pitch, pitch, pitch, 10, nexus, pitch);
+                        Util.ParticleEffect.ENCHANTMENT_TABLE.display(pitch, pitch, pitch, pitch, 10, nexus, pitch);
                     }
                 }
             }
@@ -400,8 +413,8 @@ public final class Main extends JavaPlugin {
 
     public void onSecond() {
         long time = timer.getTime();
-        String prefix = this.getConfig().getString("prefix").replace("&", "§");
-        if (time == -5L) {
+        String prefix = this.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
+        if (time == -1L) {
 
             String winner = voting.getWinner();
             voting.end();
@@ -420,7 +433,7 @@ public final class Main extends JavaPlugin {
             }
         }
 
-        if (time > -5L) {
+        if (time > -1L) {
         	if (this.getPhase() == 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 2F);
@@ -477,6 +490,17 @@ public final class Main extends JavaPlugin {
         timer.stop();
 
         for (Player p : getServer().getOnlinePlayers()) {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            Random random = new Random();
+            List<String> randomArgs = Arrays.asList("hub1", "hub2");
+            int ints = random.nextInt(randomArgs.size());
+            String rndm = randomArgs.get(ints);
+            
+            out.writeUTF("Connect");
+            out.writeUTF("hub1");
+            p.sendPluginMessage(this, "BungeeCord", out.toByteArray());
+        	
+        	
             if (PlayerMeta.getMeta(p).getTeam() == winner)
                 stats.incrementStat(StatType.WINS, p);
         }
@@ -628,7 +652,7 @@ public final class Main extends JavaPlugin {
     
     @SuppressWarnings("deprecation")
 	public void joinTeam(Player player, String team) {
-    	String prefix = this.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = this.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");;
         PlayerMeta meta = PlayerMeta.getMeta(player);
         if (meta.getTeam() != GameTeam.NONE && !player.hasPermission("anni.bypass.teamlimitor")) {
             player.sendMessage(prefix +  configManager.getConfig("messages.yml").getString("team.cantchange").replace("&", "§"));
@@ -682,9 +706,41 @@ public final class Main extends JavaPlugin {
         getSignHandler().updateSigns(GameTeam.YELLOW);
     }
     
+    public void Vote(Player p) {
+        IconMenu menu = new IconMenu("§e§lVote for map", 9, new IconMenu.OptionClickEventHandler() {
+          public void onOptionClick(IconMenu.OptionClickEvent event) {
+        	  
+        	String one = anni.getVotingManager().getMaps().get(Integer.valueOf(1));
+        	String two = anni.getVotingManager().getMaps().get(Integer.valueOf(2));
+        	String three = anni.getVotingManager().getMaps().get(Integer.valueOf(3));
+        	  
+            String d = event.getName();
+            event.setWillClose(true);
+        	anni.getVotingManager().vote(p, ChatColor.stripColor(d.toLowerCase()));
+            if (d == one) {
+            	Bukkit.dispatchCommand(p, "vote 1");
+            }
+            
+            if (d == two) {
+            	voting.vote(p, two);
+            }
+            
+            if (d == three) {
+            	voting.vote(p, three);
+            }
+            
+          }
+        }, this)
+          .setOption(2, new ItemStack(Material.EMPTY_MAP, this.voting.countVotes((String)this.voting.getMaps().get(Integer.valueOf(1)))), "§6§l" + (String)this.voting.getMaps().get(Integer.valueOf(1)), "§7Votes §8» §e" + this.voting.countVotes((String)this.voting.getMaps().get(Integer.valueOf(1))))
+          .setOption(4, new ItemStack(Material.EMPTY_MAP, this.voting.countVotes((String)this.voting.getMaps().get(Integer.valueOf(2)))), "§6§l" + (String)this.voting.getMaps().get(Integer.valueOf(2)), "§7Votes §8» §e" + this.voting.countVotes((String)this.voting.getMaps().get(Integer.valueOf(2))))
+          .setOption(6, new ItemStack(Material.EMPTY_MAP, this.voting.countVotes((String)this.voting.getMaps().get(Integer.valueOf(3)))), "§6§l" + (String)this.voting.getMaps().get(Integer.valueOf(3)), "§7Votes §8» §e" + this.voting.countVotes((String)this.voting.getMaps().get(Integer.valueOf(3))));
+        
+        menu.open(p);
+      }
+    
     public void Team(final Player p) {
     	@SuppressWarnings("deprecation")
-		IconMenu menu = new IconMenu("§e§l§nSelect team", 9, new IconMenu.OptionClickEventHandler() {
+		IconMenu menu = new IconMenu("§e§lSelect team", 9, new IconMenu.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IconMenu.OptionClickEvent event) {
              

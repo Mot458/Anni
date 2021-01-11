@@ -42,7 +42,7 @@ public class VotingManager {
     }
 
     public boolean vote(CommandSender voter, String vote) {
-    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
         try {
             int val = Integer.parseInt(vote);
 
@@ -69,7 +69,7 @@ public class VotingManager {
         }
 
         voter.sendMessage(prefix + plugin.getConfigManager().getConfig("messages.yml").getString("mapisntexist").replace("&", "§"));
-        return false;
+        return true;
     }
 
     public String getWinner() {
@@ -97,7 +97,7 @@ public class VotingManager {
         return maps;
     }
 
-    private int countVotes(String map) {
+    public int countVotes(String map) {
         int total = 0;
         for (String vote : votes.values())
             if (vote.equals(map))
@@ -105,7 +105,7 @@ public class VotingManager {
         return total;
     }
 
-    private void updateScoreboard() {
+    public void updateScoreboard() {
         for (String map : maps.values())
             plugin.getScoreboardHandler().teams.get(map).setSuffix(
                     ChatColor.RED + " » " + ChatColor.GREEN + countVotes(map) + " vote" + (countVotes(map) == 1 ? "" : "s"));

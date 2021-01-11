@@ -89,16 +89,16 @@ public class ClassAbilityListener implements Listener {
           ev.setDamage(ev.getDamage() / 2.0D);
       }
     }
-    @EventHandler
-    public void onSnake(PlayerToggleSneakEvent e){
-    	if(e.isSneaking()){
-            Player player = e.getPlayer();
-            Kit kit = PlayerMeta.getMeta(player).getKit();
-            if (kit == Kit.SPY) {
-            	player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 0, true),true);
-            }
-        }
-    }
+//:    @EventHandler
+//:    public void onSnake(PlayerToggleSneakEvent e){
+//:    	if(e.isSneaking()){
+//:            Player player = e.getPlayer();
+//:            Kit kit = PlayerMeta.getMeta(player).getKit();
+//:            if (kit == Kit.SPY) {
+//:            	player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 0, true),true);
+//:            }
+//:        }
+//:    }
     @EventHandler
     public void onFallDamage(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player))

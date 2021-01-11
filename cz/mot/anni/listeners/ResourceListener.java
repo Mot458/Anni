@@ -58,14 +58,106 @@ public class ResourceListener implements Listener {
         addResource(Material.HAY_BLOCK, 0, 20);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = false)
     public void onResourceBreak(BlockBreakEvent e) {
+       	Player player = e.getPlayer();
+    	Block block = e.getBlock();
+        Material type = block.getType();
+        Kit kit = PlayerMeta.getMeta(player).getKit();
+        int qty = getDropQuantity(type);
+        Resource resource = resources.get(type);
+    	
         if (resources.containsKey(e.getBlock().getType())) {
             e.setCancelled(true);
-            breakResource(e.getPlayer(), e.getBlock());
-            e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, e.getBlock().getTypeId());
-        } else if (queue.contains(e.getBlock().getLocation())) {
+            
+          if (kit == Kit.MINER) {
+                qty *= rand.nextFloat() < 0.9 ? 2 : 1;
+                
+                if (block.getType() == Material.IRON_ORE) {
+                    ItemStack iron = new ItemStack(Material.IRON_INGOT, Math.max(1, qty));
+                	player.getInventory().addItem(iron);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                }
+                
+                if (block.getType() == Material.GOLD_ORE) {
+                    ItemStack gold = new ItemStack(Material.GOLD_INGOT, Math.max(1, qty));
+                	player.getInventory().addItem(gold);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.COAL_ORE) {
+                    ItemStack coal = new ItemStack(Material.COAL, Math.max(1, qty));
+                	player.getInventory().addItem(coal);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.DIAMOND_ORE) {
+                    ItemStack dmd = new ItemStack(Material.DIAMOND, Math.max(1, qty));
+                	player.getInventory().addItem(dmd);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.REDSTONE_ORE) {
+                    ItemStack redstone = new ItemStack(Material.REDSTONE, 3 + rand.nextInt(3));
+                	player.getInventory().addItem(redstone);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.GLOWING_REDSTONE_ORE) {
+                    ItemStack redstone = new ItemStack(Material.REDSTONE, 3 + rand.nextInt(3));
+                	player.getInventory().addItem(redstone);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.EMERALD_ORE) {
+                    ItemStack air = new ItemStack(Material.AIR);
+                	player.getInventory().addItem(air);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.PUMPKIN) {
+                    ItemStack pie = new ItemStack(Material.PUMPKIN_PIE, 1 + rand.nextInt(2));
+                	player.getInventory().addItem(pie);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.MELON_BLOCK) {
+                    ItemStack melon = new ItemStack(Material.MELON, 3 + rand.nextInt(9));
+                	player.getInventory().addItem(melon);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.HAY_BLOCK) {
+                    ItemStack bread = new ItemStack(Material.BREAD, 1 + rand.nextInt(1));
+                	player.getInventory().addItem(bread);
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+                
+                if (block.getType() == Material.LOG) {
+                    Material dropType = resource.drop;
+                    player.getInventory().addItem(new ItemStack(dropType, 1));
+                    player.giveExp(resource.xp);
+                    queueRespawn(block);
+                    }
+              }
+          
+          if (kit != Kit.MINER) {
+              breakResource(e.getPlayer(), e.getBlock());
+              e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.FLAME, e.getBlock().getTypeId());
+          }
+    }
+            
+        else if (queue.contains(e.getBlock().getLocation())) {
             e.setCancelled(true);
         }
     }

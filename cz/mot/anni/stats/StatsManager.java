@@ -19,15 +19,11 @@ public class StatsManager {
 
     public int getStat(StatType s, Player p) {
         if (!plugin.useMysql) {
-            return config.getConfig("stats.yml").getInt(
-                    p.getName() + "." + s.name());
+            return config.getConfig("stats.yml").getInt(p.getName() + "." + s.name());
         } else {
             try {
                 int stat = UNDEF_STAT;
-                ResultSet rs = plugin
-                        .getDatabaseHandler()
-                        .query("SELECT * FROM `" + plugin.mysqlName + "` WHERE `username`='"
-                                + p.getName() + "'").getResultSet();
+                ResultSet rs = plugin.getDatabaseHandler().query("SELECT * FROM `" + plugin.mysqlName + "` WHERE `username`='" + p.getName() + "'").getResultSet();
 
                 while (rs.next())
                     stat = rs.getInt(s.name().toLowerCase());
@@ -42,14 +38,10 @@ public class StatsManager {
 
     public void setValue(StatType s, Player p, int value) {
         if (!plugin.useMysql) {
-            config.getConfig("stats.yml").set(p.getName() + "." + s.name(),
-                    value);
+            config.getConfig("stats.yml").set(p.getName() + "." + s.name(), value);
             config.save("stats.yml");
         } else {
-            plugin.getDatabaseHandler().query(
-                    "UPDATE `" + plugin.mysqlName + "` SET `" + s.name().toLowerCase()
-                            + "`='" + value + "' WHERE `username`='"
-                            + p.getName() + "';");
+            plugin.getDatabaseHandler().query("UPDATE `" + plugin.mysqlName + "` SET `" + s.name().toLowerCase() + "`='" + value + "' WHERE `username`='" + p.getName() + "';");
         }
     }
 

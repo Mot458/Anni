@@ -17,7 +17,6 @@ ouseplayer: " &eThis command can use only player!"
 useclass: " &7Use: &e/Class"
 mapisntexist: " &7This map isn't exist!"
 votedfor: " &7You voted for: &e"
-soulbound: " &6Soulbound"
  
 voting:
   ended: " &7Voting ended!"
@@ -59,6 +58,6 @@ shop:
   dontgold: " &7You don't have enought golds for: &e"
   brewing: " &eBrewing shop is aviable in phase &a4"
   
-kit:
-  ulocked: "&aUnlocked"
-  locked: "&cLocked"
+kill:
+  invisible: " &7You are invisible to &b3 &7seconds!"
+  uninvisible: " &7Now you are uninvisible!"

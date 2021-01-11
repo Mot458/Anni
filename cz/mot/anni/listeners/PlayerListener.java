@@ -1,6 +1,8 @@
 package cz.mot.anni.listeners;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.WordUtils;
@@ -38,7 +40,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
+
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+
 import cz.mot.anni.Main;
 import cz.mot.anni.Util;
 import cz.mot.anni.api.TitleAPI;
@@ -50,7 +57,7 @@ import cz.mot.anni.object.GameTeam;
 import cz.mot.anni.object.Kit;
 import cz.mot.anni.object.PlayerMeta;
 import cz.mot.anni.stats.StatType;
-
+import cz.mot.anni.stats.StatsGUI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand;
@@ -65,43 +72,108 @@ public class PlayerListener implements Listener {
     }
 
     @SuppressWarnings("static-access")
-    @EventHandler
+	@EventHandler
     public void onMOTDPing(ServerListPingEvent e) {
-        if (plugin.motd) {
-            String motd = plugin.getConfig().getString("motdPhase").replaceAll("%PHASE%", ChatUtil.translateRoman(plugin.getPhase()));
-            try {
+    	
                 if (plugin.getPhase() == 0) {
-                	e.setMotd(plugin.getConfig().getString("motdLobby").replace("&", "§"));
-                } else {
-                motd = motd.replaceAll("%TIME%", plugin.getPhaseManager()
-                        .timeString(plugin.getPhaseManager().getTime()));
-                motd = motd.replaceAll("%PLAYERCOUNT",
-                        String.valueOf(Bukkit.getOnlinePlayers().size()));
-                motd = motd.replaceAll("%MAXPLAYERS%",
-                        String.valueOf(Bukkit.getMaxPlayers()));
-                motd = motd.replaceAll("%GREENNEXUS%",
-                        String.valueOf(getNexus(GameTeam.GREEN)));
-                motd = motd.replaceAll("%GREENCOUNT%",
-                        String.valueOf(getPlayers(GameTeam.GREEN)));
-                motd = motd.replaceAll("%REDNEXUS%",
-                        String.valueOf(getNexus(GameTeam.RED)));
-                motd = motd.replaceAll("%REDCOUNT%",
-                        String.valueOf(getPlayers(GameTeam.GREEN)));
-                motd = motd.replaceAll("%BLUENEXUS%",
-                        String.valueOf(getNexus(GameTeam.BLUE)));
-                motd = motd.replaceAll("%BLUECOUNT%",
-                        String.valueOf(getPlayers(GameTeam.GREEN)));
-                motd = motd.replaceAll("%YELLOWNEXUS%",
-                        String.valueOf(getNexus(GameTeam.YELLOW)));
-                motd = motd.replaceAll("%YELLOWCOUNT%",
-                        String.valueOf(getPlayers(GameTeam.GREEN)));
-                e.setMotd(ChatColor.translateAlternateColorCodes('&', motd));
-                }
-            } catch (Exception ex) {
-            }
-            
+                    String motd = plugin.getConfig().getString("motdLobby").replace("&", "§");
+                    motd = motd.replaceAll("%PLAYERCOUNT%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+                    motd = motd.replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
+                    motd = motd.replace("%ARROW%", "»");
+                    
+                	e.setMotd(motd);
+                	
+                } else if (plugin.getPhase() == 1) {
+                	
+               String motd1 = plugin.getConfig().getString("motdPhase1").replace("&", "§");
+                motd1 = motd1.replaceAll("%TIME%", plugin.getPhaseManager().timeString(plugin.getPhaseManager().getTime()));
+                motd1 = motd1.replaceAll("%PLAYERCOUNT%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+                motd1 = motd1.replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
+                motd1 = motd1.replaceAll("%GREENNEXUS%", String.valueOf(getNexus(GameTeam.GREEN)));
+                motd1 = motd1.replaceAll("%GREENCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd1 = motd1.replaceAll("%REDNEXUS%", String.valueOf(getNexus(GameTeam.RED)));
+                motd1 = motd1.replaceAll("%REDCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd1 = motd1.replaceAll("%BLUENEXUS%", String.valueOf(getNexus(GameTeam.BLUE)));
+                motd1 = motd1.replaceAll("%BLUECOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd1 = motd1.replaceAll("%YELLOWNEXUS%", String.valueOf(getNexus(GameTeam.YELLOW)));
+                motd1 = motd1.replaceAll("%YELLOWCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd1 = motd1.replace("%ARROW%", "»");
+                
+                e.setMotd(motd1);
+                
+                } else if (plugin.getPhase() == 2) {
+                	
+               String motd2 = plugin.getConfig().getString("motdPhase2").replace("&", "§");
+                motd2 = motd2.replaceAll("%TIME%", plugin.getPhaseManager().timeString(plugin.getPhaseManager().getTime()));
+                motd2 = motd2.replaceAll("%PLAYERCOUNT%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+                motd2 = motd2.replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
+                motd2 = motd2.replaceAll("%GREENNEXUS%", String.valueOf(getNexus(GameTeam.GREEN)));
+                motd2 = motd2.replaceAll("%GREENCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd2 = motd2.replaceAll("%REDNEXUS%", String.valueOf(getNexus(GameTeam.RED)));
+                motd2 = motd2.replaceAll("%REDCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd2 = motd2.replaceAll("%BLUENEXUS%", String.valueOf(getNexus(GameTeam.BLUE)));
+                motd2 = motd2.replaceAll("%BLUECOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd2 = motd2.replaceAll("%YELLOWNEXUS%", String.valueOf(getNexus(GameTeam.YELLOW)));
+                motd2 = motd2.replaceAll("%YELLOWCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd2 = motd2.replace("%ARROW%", "»");
+                
+                e.setMotd(motd2);
+                
+                } else if (plugin.getPhase() == 3) {
+                	
+               String motd3 = plugin.getConfig().getString("motdPhase3").replace("&", "§");
+                motd3 = motd3.replaceAll("%TIME%", plugin.getPhaseManager().timeString(plugin.getPhaseManager().getTime()));
+                motd3 = motd3.replaceAll("%PLAYERCOUNT%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+                motd3 = motd3.replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
+                motd3 = motd3.replaceAll("%GREENNEXUS%", String.valueOf(getNexus(GameTeam.GREEN)));
+                motd3 = motd3.replaceAll("%GREENCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd3 = motd3.replaceAll("%REDNEXUS%", String.valueOf(getNexus(GameTeam.RED)));
+                motd3 = motd3.replaceAll("%REDCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd3 = motd3.replaceAll("%BLUENEXUS%", String.valueOf(getNexus(GameTeam.BLUE)));
+                motd3 = motd3.replaceAll("%BLUECOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd3 = motd3.replaceAll("%YELLOWNEXUS%", String.valueOf(getNexus(GameTeam.YELLOW)));
+                motd3 = motd3.replaceAll("%YELLOWCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd3 = motd3.replace("%ARROW%", "»");
+                
+                e.setMotd(motd3);
+                
+                } else if (plugin.getPhase() == 4) {
+                	
+               String motd4 = plugin.getConfig().getString("motdPhase4").replace("&", "§");
+                motd4 = motd4.replaceAll("%TIME%", plugin.getPhaseManager().timeString(plugin.getPhaseManager().getTime()));
+                motd4 = motd4.replaceAll("%PLAYERCOUNT%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+                motd4 = motd4.replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
+                motd4 = motd4.replaceAll("%GREENNEXUS%", String.valueOf(getNexus(GameTeam.GREEN)));
+                motd4 = motd4.replaceAll("%GREENCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd4 = motd4.replaceAll("%REDNEXUS%", String.valueOf(getNexus(GameTeam.RED)));
+                motd4 = motd4.replaceAll("%REDCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd4 = motd4.replaceAll("%BLUENEXUS%", String.valueOf(getNexus(GameTeam.BLUE)));
+                motd4 = motd4.replaceAll("%BLUECOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd4 = motd4.replaceAll("%YELLOWNEXUS%", String.valueOf(getNexus(GameTeam.YELLOW)));
+                motd4 = motd4.replaceAll("%YELLOWCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd4 = motd4.replace("%ARROW%", "»");
+                
+                e.setMotd(motd4);
+                
+                } else if (plugin.getPhase() == 5) {
+                	
+               String motd5 = plugin.getConfig().getString("motdPhase5").replace("&", "§");
+                motd5 = motd5.replaceAll("%TIME%", plugin.getPhaseManager().timeString(plugin.getPhaseManager().getTime()));
+                motd5 = motd5.replaceAll("%PLAYERCOUNT%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+                motd5 = motd5.replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
+                motd5 = motd5.replaceAll("%GREENNEXUS%", String.valueOf(getNexus(GameTeam.GREEN)));
+                motd5 = motd5.replaceAll("%GREENCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd5 = motd5.replaceAll("%REDNEXUS%", String.valueOf(getNexus(GameTeam.RED)));
+                motd5 = motd5.replaceAll("%REDCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd5 = motd5.replaceAll("%BLUENEXUS%", String.valueOf(getNexus(GameTeam.BLUE)));
+                motd5 = motd5.replaceAll("%BLUECOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd5 = motd5.replaceAll("%YELLOWNEXUS%", String.valueOf(getNexus(GameTeam.YELLOW)));
+                motd5 = motd5.replaceAll("%YELLOWCOUNT%", String.valueOf(getPlayers(GameTeam.GREEN)));
+                motd5 = motd5.replace("%ARROW%", "»");
+                
+                e.setMotd(motd5);
         }
-    }
+      }
     
     private int getNexus(GameTeam t) {
         int health = 0;
@@ -234,10 +306,87 @@ public class PlayerListener implements Listener {
                     }
                 }
         }
-    }	
+    }
+	
+	@EventHandler
+    public void onInteractVote(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack handItem = p.getItemInHand();
+            if (handItem != null) {
+            	int id = plugin.getConfig().getInt("VoteItemID");
+                if (handItem.getType() == Material.getMaterial(id)) {
+                    if (handItem.getItemMeta().hasDisplayName()) {
+                    	String item = plugin.getConfig().getString("VoteItemName").replace("&", "§");
+                        if (handItem.getItemMeta().getDisplayName().contains(item));
+                        
+                        plugin.Vote(p);
+                        }
+                    }
+                }
+        }
+    }
+	
+	@EventHandler
+    public void onInteractLeave(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        ItemStack handItem = p.getItemInHand();
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        
+        if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) {
+            if (handItem != null) {
+            	int id = plugin.getConfig().getInt("LeaveItemID");
+                if (handItem.getType() == Material.getMaterial(id)) {
+                    if (handItem.getItemMeta().hasDisplayName()) {
+                    	String item = plugin.getConfig().getString("LeaveItemName").replace("&", "§");
+                        if (handItem.getItemMeta().getDisplayName().contains(item));
+                        
+                    	String message = plugin.getConfig().getString("LeaveMessage").replace("&", "§").replace("%ARROW%", "»");
+                        
+                        p.sendMessage(message);
+                        
+                        Random random = new Random();
+                        List<String> randomArgs = Arrays.asList("hub1", "hub2");
+                        int ints = random.nextInt(randomArgs.size());
+                        String rndm = randomArgs.get(ints);
+                        
+                        out.writeUTF("Connect");
+                        out.writeUTF("hub1");
+                        p.sendPluginMessage((Plugin) this, "BungeeCord", out.toByteArray());
+                        }
+                    }
+                }
+        }
+    }
+	
+	@EventHandler
+    public void onInteractStats(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        Action a = e.getAction();
+        ItemStack handItem = p.getItemInHand();
+        
+        if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) {
+            if (handItem != null) {
+            	int id = plugin.getConfig().getInt("StatsItemID");
+                if (handItem.getType() == Material.getMaterial(id)) {
+                    if (handItem.getItemMeta().hasDisplayName()) {
+                    	String item = plugin.getConfig().getString("StatsItemName").replace("&", "§");
+                        if (handItem.getItemMeta().getDisplayName().contains(item));
+                        
+                        StatsGUI.openStatsGUI(p);
+                        }
+                    }
+                }
+        }
+    }
+	
+	//:         player.teleport(meta.getTeam().getRandomSpawn());
 	
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
         Player p = e.getPlayer();
         PlayerMeta meta = PlayerMeta.getMeta(p);
         
@@ -248,8 +397,20 @@ public class PlayerListener implements Listener {
                 meta.setKit(kitsToGive.get(e.getPlayer().getName()));
                 kitsToGive.remove(e.getPlayer().getName());
             }
-            e.setRespawnLocation(meta.getTeam().getRandomSpawn());
-            meta.getKit().give(p, meta.getTeam());
+      e.setRespawnLocation(meta.getTeam().getRandomSpawn());
+      p.setGameMode(GameMode.SPECTATOR);
+      p.setFlySpeed(0.1F);
+      p.sendMessage(prefix + " §7You are invisible to §b3 §7seconds!");
+      Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
+         public void run() {
+          PlayerMeta meta = PlayerMeta.getMeta(p);
+          
+          p.teleport(meta.getTeam().getRandomSpawn());
+          meta.getKit().give(p, meta.getTeam());
+          p.setGameMode(GameMode.SURVIVAL);
+          p.sendMessage(prefix + " §7Now you are uninvisible!");
+        }
+      }, 60L);
         } else {
             e.setRespawnLocation(plugin.getMapManager().getLobbySpawnPoint());
             p.setGameMode(GameMode.SPECTATOR);
@@ -264,12 +425,13 @@ public class PlayerListener implements Listener {
     @SuppressWarnings("deprecation")
 	@EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
     	String msg = plugin.getConfig().getString("JoinTitle").replace("&", "§");
     	String msg1 = plugin.getConfig().getString("JoinSubTitle").replace("&", "§");
         final Player player = e.getPlayer();
         plugin.getPhaseManager();
-        player.setGameMode(GameMode.SURVIVAL);
+        
+        player.setGameMode(GameMode.ADVENTURE);
 		String msg2 = plugin.getConfig().getString("Footer").replace("&", "§").replaceAll(plugin.getPhase() == 0 ? plugin.getConfig().getString("motdLobby") : "%PHASE%", ChatUtil.translateRoman(plugin.getPhase())).replaceAll("%TIME%", PhaseManager.timeString(plugin.getPhaseManager().getTime()));
         e.setJoinMessage("");
         PlayerMeta meta = PlayerMeta.getMeta(player);
@@ -279,8 +441,7 @@ public class PlayerListener implements Listener {
     				.getString("Header").replaceAll("%MAP%", WordUtils.capitalize(plugin.voting.getWinner()))), String.valueOf(plugin.getPhase() == 0 ? plugin.getConfig().getString("motdLobby") : msg2));
         }
         player.sendMessage(prefix + plugin.getConfigManager().getConfig("config.yml").getString("ActionWelcome").replace("&", "§"));
-        if (plugin.getPhase() > plugin.lastJoinPhase
-                && !player.hasPermission("anni.bypass.phaselimiter")) {
+        if (plugin.getPhase() > plugin.lastJoinPhase && !player.hasPermission("anni.bypass.phaselimiter")) {
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
@@ -292,7 +453,7 @@ public class PlayerListener implements Listener {
                 	}
                 }
             }, 1l);
-            e.setJoinMessage("");
+            e.setJoinMessage(null);
             return;
         }
         if (Main.getInstance().getConfig().getBoolean("EnableJoinTitle") == true) {
@@ -330,6 +491,33 @@ public class PlayerListener implements Listener {
             selector.setItemMeta(itemMeta);
         	int slot = plugin.getConfig().getInt("JoinItemClassSlot");
             player.getInventory().setItem(slot-1, selector);
+            
+            int id4 = plugin.getConfig().getInt("VoteItemID");
+        	int slot4 = plugin.getConfig().getInt("VoteItemSlot");
+            String item4 = plugin.getConfig().getString("VoteItemName").replace("&", "§");
+			ItemStack vote = new ItemStack(Material.getMaterial(id4));
+            ItemMeta itemMeta4 = vote.getItemMeta();
+            itemMeta4.setDisplayName(item4);
+            vote.setItemMeta(itemMeta4);
+            player.getInventory().setItem(slot4-1, vote);
+            
+            int id5 = plugin.getConfig().getInt("LeaveItemID");
+        	int slot5 = plugin.getConfig().getInt("LeaveItemSlot");
+            String item5 = plugin.getConfig().getString("LeaveItemName").replace("&", "§");
+			ItemStack leave = new ItemStack(Material.getMaterial(id5));
+            ItemMeta itemMeta5 = leave.getItemMeta();
+            itemMeta5.setDisplayName(item5);
+            leave.setItemMeta(itemMeta5);
+            player.getInventory().setItem(slot5-1, leave);
+            
+            int id6 = plugin.getConfig().getInt("StatsItemID");
+        	int slot6 = plugin.getConfig().getInt("StatsItemSlot");
+            String item6 = plugin.getConfig().getString("StatsItemName").replace("&", "§");
+			ItemStack stats = new ItemStack(Material.getMaterial(id6));
+            ItemMeta itemMeta6 = stats.getItemMeta();
+            itemMeta6.setDisplayName(item6);
+            stats.setItemMeta(itemMeta6);
+            player.getInventory().setItem(slot6-1, stats);
             
             if (player.hasPermission("anni.startitem")) {
             	
@@ -393,21 +581,15 @@ public class PlayerListener implements Listener {
             }
         }
 
-        plugin.getStatsManager().setValue(StatType.DEATHS, p,
-                plugin.getStatsManager().getStat(StatType.DEATHS, p) + 1);
+        plugin.getStatsManager().setValue(StatType.DEATHS, p, plugin.getStatsManager().getStat(StatType.DEATHS, p) + 1);
 
         if (p.getKiller() != null && !p.getKiller().equals(p)) {
             Player killer = p.getKiller();
             plugin.getStatsManager().incrementStat(StatType.KILLS, killer);
-            e.setDeathMessage(ChatUtil.formatDeathMessage(p, p.getKiller(),
-                    e.getDeathMessage()));
+            e.setDeathMessage(ChatUtil.formatDeathMessage(p, p.getKiller(), e.getDeathMessage()));
 
-            if (PlayerMeta.getMeta(killer).getKit() == Kit.BERSERKER) {
-                addHeart(killer);
-            }
         } else
-            e.setDeathMessage(ChatUtil.formatDeathMessage(p,
-                    e.getDeathMessage()));
+            e.setDeathMessage(ChatUtil.formatDeathMessage(p, e.getDeathMessage()));
         if (p.getKiller() instanceof Player) {
         	p.getKiller().giveExpLevels(plugin.getConfig().getInt("KillXP"));	
         }
@@ -415,8 +597,7 @@ public class PlayerListener implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                PacketPlayInClientCommand in = new PacketPlayInClientCommand(
-                        EnumClientCommand.PERFORM_RESPAWN);
+                PacketPlayInClientCommand in = new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN);
                 EntityPlayer cPlayer = ((CraftPlayer) p).getHandle();
                 cPlayer.playerConnection.a(in);
             }
@@ -434,8 +615,7 @@ public class PlayerListener implements Listener {
             public void run() {
             	Util.showClassSelector(player, namei);
             }
-        }, 20L * 1
-        );
+        }, 10L);
         if (!plugin.getPortalPlayers().containsKey(player)) {
             plugin.getPortalPlayers().put(player, player.getName());
         }
@@ -483,7 +663,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
-    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
         if (plugin.getPhase() > 0) {
             if (Util.isEmptyColumn(e.getBlock().getLocation()))
                 e.setCancelled(true);
@@ -508,7 +688,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
-    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
         if (plugin.getPhase() > 0) {
             for (GameTeam t : GameTeam.teams()) {
                 if (t.getNexus().getLocation()
@@ -561,7 +741,7 @@ public class PlayerListener implements Listener {
     }
 
     private void breakNexus(final GameTeam victim, Player breaker) {
-    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
         final GameTeam attacker = PlayerMeta.getMeta(breaker).getTeam();
         if (victim == attacker)
             breaker.sendMessage(prefix + plugin.getConfigManager().getConfig("messages.yml").getString("nexus.destroyyour").replace("&", "§"));
@@ -575,7 +755,7 @@ public class PlayerListener implements Listener {
 
             String msg = ChatUtil.nexusBreakMessage(breaker, attacker, victim);
             for (Player p : attacker.getPlayers())
-                p.sendMessage(msg);
+                Bukkit.broadcastMessage(msg);
 
             plugin.getScoreboardHandler().scores.get(victim.name()).setScore(victim.getNexus().getHealth());
             Bukkit.getServer().getPluginManager().callEvent(new NexusDamageEvent(breaker, victim, victim.getNexus().getHealth()));
@@ -583,9 +763,7 @@ public class PlayerListener implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    plugin.getScoreboardHandler().sb.getTeam(
-                            victim.name() + "SB").setPrefix(
-                            victim.color().toString());
+                    plugin.getScoreboardHandler().sb.getTeam(victim.name() + "SB").setPrefix(victim.color().toString());
                 }
             }, 2L);
 
@@ -669,7 +847,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§");
+    	String prefix = plugin.getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
      	String msg1 = prefix + plugin.getConfigManager().getConfig("messages.yml").getString("class.selected").replace("&", "§");
     	String msg2 = prefix + plugin.getConfigManager().getConfig("messages.yml").getString("class.youget").replace("&", "§");
         Inventory inv = e.getInventory();

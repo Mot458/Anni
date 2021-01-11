@@ -15,7 +15,7 @@ import cz.mot.anni.Main;
 import cz.mot.anni.manager.SoundManager;
 
 public class SoulboundListener implements Listener {
-    private static final String soulboundTag = Main.getInstance().getConfigManager().getConfig("messages.yml").getString("soulbound").replace("&", "§");
+    private static final String soulboundTag = "§6§lSoulBound";
 
     @EventHandler
     public void onSoulboundDrop(PlayerDropItemEvent e) {

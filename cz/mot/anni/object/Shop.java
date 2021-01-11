@@ -120,7 +120,7 @@ public class Shop implements Listener {
     private void openShop(Player player) {
     	if (Main.getInstance().getPhase() < 4) {
     		if (name == "Brewing" || name == "brewing") {
-    			String prefix = Main.getInstance().getConfig().getString("prefix").replace("&", "§");
+    			String prefix = Main.getInstance().getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»");
     			String msg = Main.getInstance().getConfigManager().getConfig("messages.yml").getString("shop.brewing").replace("&", "§");
     			player.sendMessage(prefix + msg);
     			return;
@@ -149,9 +149,9 @@ public class Shop implements Listener {
         if (buyerInv.contains(Material.GOLD_INGOT, price)) {
             buyerInv.removeItem(new ItemStack(Material.GOLD_INGOT, price));
             buyerInv.addItem(stackToGive);
-            buyer.sendMessage(Main.getInstance().getConfig().getString("prefix").replace("&", "§") + Main.getInstance().getConfigManager().getConfig("messages.yml").getString("shop.bought").replace("&", "§") + stackName);
+            buyer.sendMessage(Main.getInstance().getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»") + Main.getInstance().getConfigManager().getConfig("messages.yml").getString("shop.bought").replace("&", "§") + stackName);
         } else {
-            buyer.sendMessage(Main.getInstance().getConfig().getString("prefix").replace("&", "§") + Main.getInstance().getConfigManager().getConfig("messages.yml").getString("shop.dontgold").replace("&", "§") + stackName);
+            buyer.sendMessage(Main.getInstance().getConfig().getString("prefix").replace("&", "§").replace("%ARROW%", "»") + Main.getInstance().getConfigManager().getConfig("messages.yml").getString("shop.dontgold").replace("&", "§") + stackName);
         }
     }
 

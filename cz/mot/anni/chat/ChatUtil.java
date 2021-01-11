@@ -17,6 +17,8 @@ public class ChatUtil {
     private static final String RESET = ChatColor.RESET.toString();
 
     private static boolean roman = false;
+    
+    public static Main plugin;
 
     public static void setRoman(boolean b) {
         roman = b;
@@ -67,14 +69,14 @@ public class ChatUtil {
     }
 
     public static void broadcast(String message) {
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&',
-                message));
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public static void nexusDestroyed(GameTeam attacker, GameTeam victim, Player p) {
     	String title = Main.getInstance().getConfig().getString("NexusDestroyedTitle").replace("&", "§").replace("%DESTOYED%", victim.coloredName()).replace("%KILLER%", attacker.color().toString() + p.getName()).replace("%TEAM%", attacker.coloredName());
     	String sub = Main.getInstance().getConfig().getString("NexusDestroyedSubTitle").replace("&", "§").replace("%DESTROYED%", victim.coloredName()).replace("%KILLER%", attacker.color().toString() + p.getName()).replace("%TEAM%", attacker.coloredName());
-        broadcast("§8===============[ §eNexus §8]===============");
+    	
+    	broadcast("§8===============[ §eNexus §8]===============");
         broadcast(attacker.color().toString() + p.getName() + " §7from team §r" + attacker.coloredName() + " §7destroy " + victim.coloredName() + " §7nexus!");
         broadcast("§8==============================================");
         if (Main.getInstance().getConfig().getBoolean("EnableNexusTitle") == true) {

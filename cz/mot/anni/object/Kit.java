@@ -29,12 +29,9 @@ public enum Kit {
             spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
             spawnItems.add(new ItemStack(Material.WOOD_AXE));
             spawnItems.add(new ItemStack(Material.WORKBENCH));
-            lore.add("You are the backbone.");
+            lore.add("You are the Civilian.");
             lore.add("");
-            lore.add("Fuel all facets of the");
-            lore.add("war machine with your");
-            lore.add("set of wooden tools and");
-            lore.add("prepare for battle!");
+            lore.add("You are nothing special");
         }
     },
     WARRIOR(Material.STONE_SWORD) {
@@ -42,19 +39,12 @@ public enum Kit {
             spawnItems.add(new ItemStack(Material.STONE_SWORD));
             spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
             spawnItems.add(new ItemStack(Material.WOOD_AXE));
-            spawnItems.add(new Potion(PotionType.INSTANT_HEAL, 1)
-                    .toItemStack(1));
+            spawnItems.add(new Potion(PotionType.INSTANT_HEAL, 1).toItemStack(1));
             spawnItems.get(0).addEnchantment(Enchantment.KNOCKBACK, 1);
-            lore.add("You are the sword.");
+            lore.add("You are the Warrior.");
             lore.add("");
             lore.add("You deal +1 damage with");
             lore.add("any melee weapon.");
-            lore.add("");
-            lore.add("Spawn with a knockback");
-            lore.add("sword and a health potion");
-            lore.add("which enable you to move");
-            lore.add("immediately on the enemy");
-            lore.add("and attack!");
         }
     },
     ARCHER(Material.BOW) {
@@ -64,11 +54,11 @@ public enum Kit {
             spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
             spawnItems.add(new ItemStack(Material.WOOD_AXE));
             spawnItems.add(new ItemStack(Material.WOOD_SPADE));
-            spawnItems.add(new Potion(PotionType.INSTANT_HEAL, 1)
-                    .toItemStack(1));
-            spawnItems.add(new ItemStack(Material.ARROW, 16));
+            spawnItems.add(new Potion(PotionType.INSTANT_HEAL, 1).toItemStack(1));
+            spawnItems.add(new ItemStack(Material.ARROW, 1));
             spawnItems.get(1).addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-            lore.add("You are the rain.");
+            spawnItems.get(1).addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+            lore.add("You are the Archer.");
             lore.add("");
             lore.add("You deal +1 damage with");
             lore.add("a bow and can craft arrows");
@@ -80,21 +70,19 @@ public enum Kit {
         }
     },
 
-    MINER(Material.STONE_PICKAXE) {
+    MINER(Material.IRON_PICKAXE) {
         {
             spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-            spawnItems.add(new ItemStack(Material.STONE_PICKAXE));
+            spawnItems.add(new ItemStack(Material.IRON_PICKAXE));
             spawnItems.add(new ItemStack(Material.WOOD_AXE));
-            spawnItems.add(new ItemStack(Material.FURNACE));
-            spawnItems.add(new ItemStack(Material.COAL, 4));
             spawnItems.get(1).addEnchantment(Enchantment.DIG_SPEED, 1);
-            lore.add("You are the hands.");
+            lore.add("You are the Miner.");
             lore.add("");
             lore.add("Spawn with an efficiency");
-            lore.add("stone pickaxe and mine");
+            lore.add("iron pickaxe and mine");
             lore.add("precious resources for");
             lore.add("your team more quickly with");
-            lore.add("your doubled ore drops!");
+            lore.add("your doubled ingot drops!");
         }
     },
     LUMBERJACK(Material.STONE_AXE) {
@@ -103,7 +91,7 @@ public enum Kit {
             spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
             spawnItems.add(new ItemStack(Material.STONE_AXE));
             spawnItems.get(2).addEnchantment(Enchantment.DIG_SPEED, 1);
-            lore.add("You are the wedge.");
+            lore.add("You are the Lumberjack.");
             lore.add("");
             lore.add("Spawn with an efficiency");
             lore.add("stone axe and use your");
@@ -121,7 +109,7 @@ public enum Kit {
             ItemMeta meta = spawnItems.get(1).getItemMeta();
             meta.setDisplayName("Grapple");
             spawnItems.get(1).setItemMeta(meta);
-            lore.add("You are the feet.");
+            lore.add("You are the Scout.");
             lore.add("");
             lore.add("Use your permanent speed");
             lore.add("boost to maneuver around");
@@ -135,32 +123,17 @@ public enum Kit {
             lore.add("you down.");
         }
     },
-    BERSERKER(Material.CHAINMAIL_CHESTPLATE) {
+    DESTROYER(Material.COAL_BLOCK) {
         {
-            spawnItems.add(new ItemStack(Material.STONE_SWORD));
-            spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-            spawnItems.add(new ItemStack(Material.WOOD_AXE));
-            spawnItems.add(new Potion(PotionType.INSTANT_HEAL, 1)
-                    .toItemStack(1));
-            lore.add("You are the tank.");
-            lore.add("");
-            lore.add("Start each life with only");
-            lore.add("7 hearts. For every enemy");
-            lore.add("kill, you garner yourself");
-            lore.add("an extra heart, allowing");
-            lore.add("you to gain up to 15 hearts!");
-        }
-    },
-    SPY(Material.POTION) {
-        {
-            spawnItems.add(new ItemStack(Material.STONE_SWORD));
+            spawnItems.add(new ItemStack(Material.WOOD_SWORD));
             spawnItems.add(new ItemStack(Material.STONE_PICKAXE));
-            spawnItems.add(new ItemStack(Material.STONE_AXE));
-            lore.add("You are the Spy");
+            spawnItems.add(new ItemStack(Material.WOOD_AXE));
+            spawnItems.add(new ItemStack(Material.WOOD_SPADE));
+            lore.add("You are the destroyer.");
             lore.add("");
-            lore.add("You Click Shift");
-            lore.add("You give Potion Effect Invisibility 10 secounds!");
-        }
+            lore.add("When you hit some nexus,");            
+            lore.add("nexus will get -2hp.");
+            }
     },
     DEFENDER(Material.IRON_CHESTPLATE) {
         {
@@ -245,11 +218,6 @@ public enum Kit {
 
         if (this == SCOUT)
             addScoutParticles(recipient);
-
-        if (this == BERSERKER)
-            recipient.setMaxHealth(14.0);
-        else
-            recipient.setMaxHealth(20.0);
     }
 
     private Color getTeamColor(GameTeam team) {

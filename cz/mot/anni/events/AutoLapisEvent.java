@@ -32,23 +32,17 @@ public class AutoLapisEvent implements Listener {
 	@EventHandler
 	public void openInventoryEvent(InventoryOpenEvent e) {
 		if (e.getInventory() instanceof EnchantingInventory) {
-			if (e.getPlayer().hasPermission("autolapis.autofill")
-					|| e.getPlayer().isOp() || e.getPlayer().hasPermission("*")) {
 				e.getInventory().setItem(1, this.lapis);
-				this.plugin.inventories.add((EnchantingInventory) e
-						.getInventory());
+				this.plugin.inventories.add((EnchantingInventory) e.getInventory());
 			}
 		}
-	}
 
 	@EventHandler
 	public void closeInventoryEvent(InventoryCloseEvent e) {
 		if (e.getInventory() instanceof EnchantingInventory) {
-			if (this.plugin.inventories.contains((EnchantingInventory) e
-					.getInventory())) {
+			if (this.plugin.inventories.contains((EnchantingInventory) e.getInventory())) {
 				e.getInventory().setItem(1, null);
-				this.plugin.inventories.remove((EnchantingInventory) e
-						.getInventory());
+				this.plugin.inventories.remove((EnchantingInventory) e.getInventory());
 			}
 		}
 	}
@@ -56,8 +50,7 @@ public class AutoLapisEvent implements Listener {
 	@EventHandler
 	public void inventoryClickEvent(InventoryClickEvent e) {
 		if (e.getClickedInventory() instanceof EnchantingInventory) {
-			if (this.plugin.inventories.contains((EnchantingInventory) e
-					.getInventory())) {
+			if (this.plugin.inventories.contains((EnchantingInventory) e.getInventory())) {
 				if (e.getSlot() == 1) {
 					e.setCancelled(true);
 				}
@@ -67,8 +60,7 @@ public class AutoLapisEvent implements Listener {
 
 	@EventHandler
 	public void enchantItemEvent(EnchantItemEvent e) {
-		if (this.plugin.inventories.contains((EnchantingInventory) e
-				.getInventory())) {
+		if (this.plugin.inventories.contains((EnchantingInventory) e.getInventory())) {
 			e.getInventory().setItem(1, this.lapis);
 		}
 	}

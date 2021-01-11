@@ -2,7 +2,7 @@ name: Anni
 main: cz.mot.anni.Main
 authors: [coasterman10, stuntguy3000, Mot458]
 softdepend: [Vault]
-version: 3.2
+version: 3.8
 commands:
   annihilation:
     description: Anni help command
